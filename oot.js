@@ -149,6 +149,25 @@ oot.createBlankSave = function() {
 
 oot.SAVE_DATA = oot.createBlankSave();
 
+oot.verifySave = function(data) {
+	// Calculate the save data hash
+	var checksum = oot.crc(data, 0x1352);
+
+	// Take the lower byte of the CRC saved within the file
+	var low = data[0x1352];
+	// Take the higher byte of the CRC saved within the file
+	var high = data[0x1353];
+
+	// Combine the low and high end bytes into an actual hash
+	var hash = oot.ushort(low, high);
+
+	console.log(checksum, hash);
+
+	// Check for CRC integrity
+	if (checksum != hash)
+		alert(String.format("WARNING: {0} {1} CRC mismatch (got {2} expected {3})", ((i<=3) ? "File" : "Backup"), i, checksum.toString(16), hash.toString(16)));
+}
+
 oot.importSaveFromSRA = function(data) {
 	// Initialize save data
 	var save = [];
@@ -172,52 +191,35 @@ oot.importSaveFromSRA = function(data) {
 		readPos += readLen;
 
 		// Verify save chunks
-		if (readLen == 0x1450) {
-			// Calculate the save data hash
-			var checksum = oot.crc(raw, 0x1352);
-
-			// Take the lower byte of the CRC saved within the file
-			var low = raw[0x1352];
-			// Take the higher byte of the CRC saved within the file
-			var high = raw[0x1353];
-
-			// Combine the low and high end bytes into an actual hash
-			var hash = oot.ushort(low, high);
-
-			// Check for CRC integrity
-			if (checksum != hash)
-				alert(String.format("WARNING: {0} {1} CRC mismatch (got {2} expected {3})", ((i<=3) ? "File" : "Backup"), i, checksum.toString(16), hash.toString(16)));
-		}
+		if (readLen == 0x1450)
+			oot.verifySave(raw);
 
 		// Insert the chunk
 		save[chunkIndex++] = new Uint8Array(raw);
 	}
-
-	console.log(save);
 
 	// Return save data array
 	return save;
 }
 
 oot.importSaveFromRAM = function(data, version, save, slot) {
-
 	var offset = oot.RAM_OFFSETS[version];
 
 	var raw = data.slice(offset, offset + 0x1450);
-
-	console.log(slot);
 
 	var checksum = oot.crc(raw, 0x1352);
 
 	// Update file CRC
 	raw[0x1352] = checksum >> 8;
-	raw[0x1353] = checksum & 0x0F;
+	raw[0x1353] = checksum & 0xFF;
 
 	// Update file index
 	raw[0x1354] = slot;
 
 	save[slot+1] = raw;
 	save[slot+1+3] = raw;
+
+	oot.verifySave(raw);
 }
 
 oot.updateSlotsFromSave = function(save) {
