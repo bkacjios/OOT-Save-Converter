@@ -1,0 +1,211 @@
+<html>
+	<head>
+		<style>
+			@font-face {
+				font-family: "Chairo";
+				src: url("./chiaro.otf") format("opentype");
+			}
+
+			html, body {
+				//background: url("./images/background.jpg") no-repeat center;
+				background-size: cover;
+				margin: 0px;
+				padding: 0px;
+				image-rendering: pixelated;
+				font-family: "Chairo";
+			}
+
+			form {
+				margin-bottom: 0px;
+			}
+
+			h1 {
+				display: inline;
+				margin: 0px;
+				font-size: 20px;
+			}
+
+			.container {
+				width: 512px;
+				margin-top: 8px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.slotcontainer {
+				height: 269px;
+			}
+
+			.info {
+				background: rgba(0, 0, 0, 0.5);
+				border-radius: 16px;
+				font-family: "Chairo";
+				font-size: 16px;
+				line-height: 18px;
+				color: white;
+				width: 480px;
+				padding: 16px;
+				margin-bottom: 8px;
+			}
+
+			.info .uploadexample {
+				display: inline-block;
+				background-image: url("./images/menu_enter.png");
+				background-size: 100% 100%;
+				width: 28px;
+				height: 16px;
+				vertical-align: bottom;
+			}
+
+			.files {
+				width: 512px;
+			}
+
+			.files .slot {
+				display: flex;
+			}
+
+			.files .file {
+				width: 512;
+				height: 49;
+
+				transition-property: height;
+				transition-duration: 0.5s;
+				transition-timing-function: ease;
+			}
+
+			.files .slot:hover .file {
+				background-size: 512px 171px;
+				height: 171px;
+			}
+
+			.files .slot:hover .file1 {
+				background-image: url("./images/file1_details.png");
+			}
+
+			.files .slot:hover .file2 {
+				background-image: url("./images/file2_details.png");
+			}
+
+			.files .slot:hover .file3 {
+				background-image: url("./images/file3_details.png");
+			}
+
+			.files .header {
+				background: rgba(0, 0, 0, 0.5);
+				border-radius: 16px;
+				margin-top: 8px;
+				margin-bottom: 8px;
+				padding-left: 24px;
+				color: white;
+			}
+
+			.upload {
+				background-image: url("./images/menu_enter.png");
+				background-size: 100% 100%;
+				width: 42px;
+				height: 24px;
+				float: right;
+				margin: 9px;
+				cursor: pointer;
+			}
+
+			select {
+				float: right;
+				margin-top: 12px;
+				margin-left: 4px;
+			}
+
+			.file .name {
+				width: 210px;
+				height: 49px;
+				float: left;
+				margin-left: 238px;
+				line-height: 49px;
+				font-size: 24px;
+			}
+
+			.slot .file1 {
+				background-image: url("./images/file1.png");
+				background-repeat: no-repeat;
+				background-size: 512px 49px;
+			}
+
+			.slot .file2 {
+				background-image: url("./images/file2.png");
+				background-repeat: no-repeat;
+				background-size: 512px 49px;
+			}
+
+			.slot .file3 {
+				background-image: url("./images/file3.png");
+				background-repeat: no-repeat;
+				background-size: 512px 49px;
+			}
+		</style>
+	</head>
+	<body>
+		<form>
+			<input type="file" id="fileuploadSRA" accept=".sra" style="display: none;"/>
+			<input type="file" id="fileuploadRAM" style="display: none;"/>
+		</form>
+
+		<div class="container">
+			<div class="info">
+				Welcome to the Ocarina of Time save importer!</br></br>You can use this page to upload raw RAM dumps, from your copy of Ocarina of Time, and convert it for use with your favorite emulator. If you already have an emulator save you wish to use as a base, import it first using the <div class="uploadexample"></div> button.
+			</div>
+			<div class="files">
+				<div class="header"><h1>1. Import save file</h1>
+					<div class="upload" onclick="oot.upload('SRA');"></div>
+				</div>
+				<div class="header"><h1>2. Import RAM dump</h1>
+					<div class="upload" onclick="oot.upload('RAM');"></div>
+					<select id="version">
+						<option>NTSC 1.0</option>
+						<option>NTSC 1.1</option>
+						<option>NTSC 1.2</option>
+						<option>PAL 1.0</option>
+						<option>PAL 1.1</option>
+					</select>
+					<select id="file">
+						<option>File 1</option>
+						<option>File 2</option>
+						<option>File 3</option>
+					</select>
+				</div>
+				<div class="header"><h1>3. Download save file</h1><div class="upload" onclick="oot.download();"></div></div>
+				<div class="slotcontainer">
+					<div class="slot" id="slot1">
+						<div class="file file1">
+							<div class="name" id="name1"></div>
+						</div>
+					</div>
+					<div class="slot" id="slot2">
+						<div class="file file2">
+							<div class="name" id="name2"></div>
+						</div>
+					</div>
+					<div class="slot" id="slot3">
+						<div class="file file3">
+							<div class="name" id="name3"></div>
+						</div>
+					</div>
+				</div>
+				<div class="settings header">Settings
+					<form>
+						<input type="radio" name="sound" value=0 checked=true>Stereo
+						<input type="radio" name="sound" value=1>Mono
+						<input type="radio" name="sound" value=2>Headset
+						<input type="radio" name="sound" value=3>Surround
+					</form>
+					<form>
+						<input type="radio" name="ztarget" value=0 checked=true>Switch
+						<input type="radio" name="ztarget" value=1>Hold
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script src="oot.js"></script>
+	</body>
+</html>
