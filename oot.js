@@ -101,29 +101,6 @@ for (var i=171; i<=196; i++)
 for (var i=197; i<=222; i++)
 	oot.CHARACTER_MAP[i] = String.fromCharCode(i - 100);
 
-oot.getSaveSlotName = function(save, slot) {
-	var slot = save[slot];
-	var data = slot.slice(0x0024, 0x0024 + 8);
-
-	var name = [];
-
-	for (var i=0; i<data.length; i++) {
-		if (data[i] == 0) continue;
-		name[i] = oot.CHARACTER_MAP[data[i]];
-	}
-
-	return name.join("");
-}
-
-oot.getSaveSlotValueShort = function(save, slot, pos) {
-	var slot = save[slot];
-
-	var low = slot[pos];
-	var high = slot[pos+1];
-
-	return (low << 8) + high;
-}
-
 oot.createBlankSave = function() {
 	// Initialize save data
 	var save = [];
@@ -142,8 +119,6 @@ oot.createBlankSave = function() {
 	// Return save data array
 	return save;
 }
-
-oot.SAVE_DATA = oot.createBlankSave();
 
 oot.verifySave = function(data) {
 	// Calculate the save data hash
@@ -216,17 +191,91 @@ oot.importSaveFromRAM = function(data, version, save, slot) {
 	oot.verifySave(raw);
 }
 
+oot.getSaveSlotName = function(save, slot) {
+	var slot = save[slot];
+	var data = slot.slice(0x0024, 0x0024 + 8);
+
+	var name = [];
+
+	for (var i=0; i<data.length; i++) {
+		if (data[i] == 0) continue;
+		name[i] = oot.CHARACTER_MAP[data[i]];
+	}
+
+	return name.join("");
+}
+
+oot.getSaveShort = function(save, slot, pos) {
+	var slot = save[slot];
+
+	var low = slot[pos];
+	var high = slot[pos+1];
+
+	return (low << 8) + high;
+}
+
+
+oot.getSaveBit = function(save, slot, pos, bit) {
+	var slot = save[slot];
+
+	var data = slot[pos];
+
+	return (data & (1 << bit)) >> bit;
+}
+
 oot.updateSlotsFromSave = function(save) {
 	for (var i=1; i<=3; i++) {
 		var name = oot.getSaveSlotName(save, i);
-		var rupees = oot.getSaveSlotValueShort(save, i, 0x0034);
-		var deaths = oot.getSaveSlotValueShort(save, i, 0x0022);
-		var containers = oot.getSaveSlotValueShort(save, i, 0x002E);
-		var hearts = oot.getSaveSlotValueShort(save, i, 0x0030);
+		var rupees = oot.getSaveShort(save, i, 0x0034);
+		var deaths = oot.getSaveShort(save, i, 0x0022);
+		var containers = oot.getSaveShort(save, i, 0x002E) / 0x10;
+		var hearts = oot.getSaveShort(save, i, 0x0030);
 
-		console.log(name, rupees, deaths, containers / 0x10, hearts / 0x10);
+		if (containers < 3)
+			containers = 3;
+
+		var heartsTop = containers < 10 ? containers : 10;
+		var heartsBot = containers - heartsTop;
+
+		var top = document.getElementById('hearts'+i+"top");
+		var bot = document.getElementById('hearts'+i+"bot")
+
+		top.style.width = heartsTop * 32;
+		bot.style.width = heartsBot * 32;
+
+		var defense = save[i][0x00CF];
+
+		if (defense > 0) {
+			top.setAttribute("class", "heartsdefense");
+			bot.setAttribute("class", "heartsdefense");
+		} else {
+			top.setAttribute("class", "hearts");
+			bot.setAttribute("class", "hearts");
+		}
+
 		document.getElementById('name'+i).innerHTML = name;
 		document.getElementById('rupees'+i).innerHTML = rupees;
+		document.getElementById('deaths'+i).innerHTML = deaths;
+
+		var completion = {
+			kokiri: oot.getSaveBit(save, i, 0x0ED5, 7),
+			goron:  oot.getSaveBit(save, i, 0x0ED9, 5),
+			zora:  oot.getSaveBit(save, i, 0x0EDB, 7),
+
+			forest:  oot.getSaveBit(save, i, 0x0EDC, 0),
+			fire:  oot.getSaveBit(save, i, 0x0EDC, 1),
+			water:  oot.getSaveBit(save, i, 0x0EDC, 2),
+			spirit:  oot.getSaveBit(save, i, 0x0EEC, 0),
+			shadow:  oot.getSaveBit(save, i, 0x0EDC, 0),
+			light:  oot.getSaveBit(save, i, 0x0EDD, 5)
+		}
+
+		for (var key in completion) {
+			var value = completion[key];
+			var icon = document.getElementById(key+i);
+			console.log(key+i, value ? 'visible' : 'hidden');
+			icon.style.visibility = value ? 'visible' : 'hidden';
+		}
 	}
 }
 
@@ -306,6 +355,8 @@ oot.updateZTargetSettings = function() {
 	header[0x01] = this.value;
 }
 
+oot.SAVE_DATA = oot.createBlankSave();
+
 document.getElementById('fileuploadSRA').addEventListener('change', oot.handleSRASelect, false);
 document.getElementById('fileuploadRAM').addEventListener('change', oot.handleRAMSelect, false);
 
@@ -323,7 +374,7 @@ oot.expandFile = function() {
 	this.open = this.open ? false : true;
 	this.style.height = this.open ? 171 : 49;
 	this.children[1].style.opacity = this.open ? 1 : 0;
-	this.children[1].style.height = this.open ? 110 : 0;
+	this.children[1].style.height = this.open ? 98 : 0;
 	this.children[1].style.visibility = this.open ? 'visible' : 'hidden';
 
 	var slots = document.getElementsByClassName('slot');

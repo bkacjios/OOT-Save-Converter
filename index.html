@@ -7,6 +7,7 @@
 			}
 
 			html, body {
+				background: #4364aa;
 				background-size: cover;
 				margin: 0px;
 				padding: 0px;
@@ -135,27 +136,122 @@
 				visibility: hidden;
 				opacity: 0;
 
+				overflow: hidden;
+
 				display: inline-block;
 				background: url("./images/file_details.png");
 				background-size: 512px 122px;
 
-				width: 500px;
+				width: 488px;
 				height: 0px;
-				padding-left: 12px;
-				padding-top: 12px;
+				padding: 12px;
 
 				transition-property: height, opacity, visibility;
 				transition-duration: 0.25s;
 				transition-timing-function: ease;
 			}
 
+			.info .icon {
+				width: 32px;
+				height: 32px;
+				padding-left: 36px;
+			}
+
 			.info .rupees {
 				background: url("./images/rupee.png");
 				background-repeat: no-repeat;
 				background-size: 32px 32px;
+			}
+
+			.info .deaths {
+				background: url("./images/skull.png");
+				background-repeat: no-repeat;
+				background-size: 32px 32px;
+			}
+
+			.info .deaths {
+				background: url("./images/skull.png");
+				background-repeat: no-repeat;
+				background-size: 32px 32px;
+			}
+
+			.info .heartcontainer {
+				width: 320px;
+				height: 64px;
+				float: right;
+			}
+
+			.heartcontainer .hearts {
+				background: url("./images/icon_heart.png");
+				background-size: 32px 32px;
 				width: 32px;
 				height: 32px;
-				padding-left: 32px;
+			}
+
+			.heartcontainer .heartsdefense {
+				background: url("./images/icon_heart_defense.png");
+				background-size: 32px 32px;
+				width: 32px;
+				height: 32px;
+			}
+
+			.info .medallioncontainer {
+				width: 320px;
+				height: 32px;
+				float: right;
+				display: flex;
+			}
+
+			.medallioncontainer .icon {
+				width: 32px;
+				height: 32px;
+				padding-left: 0px;
+				visibility: hidden;
+			}
+
+			.medallioncontainer .kokiri {
+				background: url("./images/kokiris_emerald.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .goron {
+				background: url("./images/gorons_ruby.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .zora {
+				background: url("./images/zoras_sapphire.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .forest {
+				background: url("./images/icon_forest.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .fire {
+				background: url("./images/icon_fire.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .water {
+				background: url("./images/icon_water.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .spirit {
+				background: url("./images/icon_spirit.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .shadow {
+				background: url("./images/icon_shadow.png");
+				background-size: 32px 32px;
+			}
+
+			.medallioncontainer .light {
+				background: url("./images/icon_light.png");
+				background-size: 32px 32px;
 			}
 		</style>
 	</head>
@@ -205,19 +301,67 @@
 					<div class="slot" id="slot1">
 						<div class="file file1"><div class="name" id="name1"></div></div>
 						<div class="info" id="info1">
-							<div class="rupees" id="rupees1">0</div>
+							<div class="heartcontainer">
+								<div class="hearts" id="hearts1top" style="width: 96;"></div>
+								<div class="hearts" id="hearts1bot" style="width: 0;"></div>
+							</div>
+							<div class="medallioncontainer">
+								<div class="icon kokiri"	id="kokiri1"></div>
+								<div class="icon goron"		id="goron1"></div>
+								<div class="icon zora"		id="zora1"></div>
+								<div class="icon forest"	id="forest1"></div>
+								<div class="icon fire"		id="fire1"></div>
+								<div class="icon water"		id="water1"></div>
+								<div class="icon spirit"	id="spirit1"></div>
+								<div class="icon shadow"	id="shadow1"></div>
+								<div class="icon light"		id="light1"></div>
+							</div>
+							<div class="icon rupees" id="rupees1">0</div>
+							<div class="icon deaths" id="deaths1">0</div>
 						</div>
 					</div>
 					<div class="slot" id="slot2">
 						<div class="file file2"><div class="name" id="name2"></div></div>
 						<div class="info" id="info1">
-							<div class="rupees" id="rupees2">0</div>
+							<div class="heartcontainer">
+								<div class="hearts" id="hearts2top" style="width: 96;"></div>
+								<div class="hearts" id="hearts2bot" style="width: 0;"></div>
+							</div>
+							<div class="medallioncontainer">
+								<div class="icon kokiri"	id="kokiri2"></div>
+								<div class="icon goron"		id="goron2"></div>
+								<div class="icon zora"		id="zora2"></div>
+								<div class="icon forest"	id="forest2"></div>
+								<div class="icon fire"		id="fire2"></div>
+								<div class="icon water"		id="water2"></div>
+								<div class="icon spirit"	id="spirit2"></div>
+								<div class="icon shadow"	id="shadow2"></div>
+								<div class="icon light"		id="light2"></div>
+							</div>
+							<div class="icon rupees" id="rupees2">0</div>
+							<div class="icon deaths" id="deaths2">0</div>
 						</div>
 					</div>
 					<div class="slot" id="slot3">
 						<div class="file file3"><div class="name" id="name3"></div></div>
 						<div class="info" id="info1">
-							<div class="rupees" id="rupees3">0</div>
+							<div class="heartcontainer">
+								<div class="hearts" id="hearts3top" style="width: 96;"></div>
+								<div class="hearts" id="hearts3bot" style="width: 0;"></div>
+							</div>
+							<div class="medallioncontainer">
+								<div class="icon kokiri"	id="kokiri3"></div>
+								<div class="icon goron"		id="goron3"></div>
+								<div class="icon zora"		id="zora3"></div>
+								<div class="icon forest"	id="forest3"></div>
+								<div class="icon fire"		id="fire3"></div>
+								<div class="icon water"		id="water3"></div>
+								<div class="icon spirit"	id="spirit3"></div>
+								<div class="icon shadow"	id="shadow3"></div>
+								<div class="icon light"		id="light3"></div>
+							</div>
+							<div class="icon rupees" id="rupees3">0</div>
+							<div class="icon deaths" id="deaths3">0</div>
 						</div>
 					</div>
 				</div>
