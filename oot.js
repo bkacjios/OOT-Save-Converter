@@ -191,7 +191,7 @@ oot.importSaveFromRAM = function(data, version, save, slot) {
 	save[slot+1+3] = raw;
 
 	// Expand the file slot
-	oot.expandFile(document.getElementById('slot'+(slot+1)));
+	oot.expandFile(document.getElementById('slot'+(slot+1)), true);
 
 	// Verify save data and display any problems
 	oot.verifySave(raw);
@@ -377,8 +377,12 @@ for(var i in ztargetOptions) {
 	ztargetOptions[i].onclick = oot.updateZTargetSettings
 }
 
-oot.expandFile = function(div) {
-	div.open = div.open ? false : true;
+oot.expandFile = function(div, open) {
+	if (open)
+		div.open = open;
+	else
+		div.open = div.open ? false : true;
+
 	div.style.height = div.open ? 171 : 49;
 	div.children[1].style.opacity = div.open ? 1 : 0;
 	div.children[1].style.height = div.open ? 98 : 0;
