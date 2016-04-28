@@ -40,14 +40,13 @@
 			}
 
 			.slotcontainer {
-				height: 269px;
-
 				cursor: default;
 				-moz-user-select: none;
 				-webkit-user-select: none;
 				-ms-user-select:none;
 				-o-user-select:none;
 				user-select:none;
+				height: 269px;
 			}
 
 			.bubble {
@@ -70,20 +69,24 @@
 				vertical-align: bottom;
 			}
 
-			.files {
+			.container .header {
+				background: rgba(0, 0, 0, 0.5);
+				border-radius: 16px;
+				margin-top: 8px;
+				margin-bottom: 8px;
+				padding-left: 24px;
+			}
+
+			.container .files {
 				width: 512px;
 			}
 
-			.files .file {
+			.container .file {
 				cursor: pointer;
 				width: 512;
 				height: 49;
 				background-size: 512px 49px;
 			}
-
-			/*.files .slot:hover .file {
-				height: 171px;
-			}*/
 
 			.slot {
 				height: 49;
@@ -105,14 +108,6 @@
 			.slot .file3 {
 				background-image: url("./images/file3.png");
 				background-repeat: no-repeat;
-			}
-
-			.files .header {
-				background: rgba(0, 0, 0, 0.5);
-				border-radius: 16px;
-				margin-top: 8px;
-				margin-bottom: 8px;
-				padding-left: 24px;
 			}
 
 			.upload {
@@ -267,107 +262,105 @@
 			<div class="bubble">
 				Welcome to the Ocarina of Time save importer!</br></br>You can use this page to upload raw RAM dumps, from your copy of Ocarina of Time, and convert it for use with your favorite emulator. If you already have an emulator save you wish to use as a base, import it first using the <div class="uploadexample"></div> button.
 			</div>
-			<div class="files">
-				<div class="header"><h1>1. Import save file</h1>
-					<div class="upload" onclick="oot.upload('SRA');"></div>
-				</div>
-				<div class="header"><h1>2. Import RAM dump</h1>
-					<div class="upload" onclick="oot.upload('RAM');"></div>
-					<select id="version">
-						<option>NTSC 1.0</option>
-						<option>NTSC 1.1</option>
-						<option>NTSC 1.2</option>
-						<option>PAL 1.0</option>
-						<option>PAL 1.1</option>
-					</select>
-					<select id="file">
-						<option>File 1</option>
-						<option>File 2</option>
-						<option>File 3</option>
-					</select>
-				</div>
-				<div class="header"><h1>3. Download save file</h1><div class="upload" onclick="oot.download();"></div></div>
-				<div class="settings header">Settings
-					<form>
-						<input type="radio" name="sound" value=0 checked=true>Stereo
-						<input type="radio" name="sound" value=1>Mono
-						<input type="radio" name="sound" value=2>Headset
-						<input type="radio" name="sound" value=3>Surround
-					</form>
-					<form>
-						<input type="radio" name="ztarget" value=0 checked=true>Switch
-						<input type="radio" name="ztarget" value=1>Hold
-					</form>
-				</div>
-				<div class="slotcontainer">
-					<div class="slot" id="slot1">
-						<div class="file file1"><div class="name" id="name1"></div></div>
-						<div class="info" id="info1">
-							<div class="heartcontainer">
-								<div class="hearts" id="hearts1top" style="width: 96;"></div>
-								<div class="hearts" id="hearts1bot" style="width: 0;"></div>
-							</div>
-							<div class="medallioncontainer">
-								<div class="icon kokiri"	id="kokiri1"></div>
-								<div class="icon goron"		id="goron1"></div>
-								<div class="icon zora"		id="zora1"></div>
-								<div class="icon forest"	id="forest1"></div>
-								<div class="icon fire"		id="fire1"></div>
-								<div class="icon water"		id="water1"></div>
-								<div class="icon spirit"	id="spirit1"></div>
-								<div class="icon shadow"	id="shadow1"></div>
-								<div class="icon light"		id="light1"></div>
-							</div>
-							<div class="icon rupees" id="rupees1">0</div>
-							<div class="icon deaths" id="deaths1">0</div>
-							<div class="icon skulltulas" id="skulltulas1">0</div>
+			<div class="header"><h1>1. Import save file</h1>
+				<div class="upload" onclick="oot.upload('SRA');"></div>
+			</div>
+			<div class="header"><h1>2. Import RAM dump</h1>
+				<div class="upload" onclick="oot.upload('RAM');"></div>
+				<select id="version">
+					<option>NTSC 1.0</option>
+					<option>NTSC 1.1</option>
+					<option>NTSC 1.2</option>
+					<option>PAL 1.0</option>
+					<option>PAL 1.1</option>
+				</select>
+				<select id="file">
+					<option>File 1</option>
+					<option>File 2</option>
+					<option>File 3</option>
+				</select>
+			</div>
+			<div class="header"><h1>3. Download save file</h1><div class="upload" onclick="oot.download();"></div></div>
+			<div class="settings header">Settings
+				<form>
+					<input type="radio" name="sound" value=0 checked=true>Stereo
+					<input type="radio" name="sound" value=1>Mono
+					<input type="radio" name="sound" value=2>Headset
+					<input type="radio" name="sound" value=3>Surround
+				</form>
+				<form>
+					<input type="radio" name="ztarget" value=0 checked=true>Switch
+					<input type="radio" name="ztarget" value=1>Hold
+				</form>
+			</div>
+			<div class="slotcontainer">
+				<div class="slot" id="slot1">
+					<div class="file file1"><div class="name" id="name1"></div></div>
+					<div class="info" id="info1">
+						<div class="heartcontainer">
+							<div class="hearts" id="hearts1top" style="width: 96;"></div>
+							<div class="hearts" id="hearts1bot" style="width: 0;"></div>
 						</div>
+						<div class="medallioncontainer">
+							<div class="icon kokiri"	id="kokiri1"></div>
+							<div class="icon goron"		id="goron1"></div>
+							<div class="icon zora"		id="zora1"></div>
+							<div class="icon forest"	id="forest1"></div>
+							<div class="icon fire"		id="fire1"></div>
+							<div class="icon water"		id="water1"></div>
+							<div class="icon spirit"	id="spirit1"></div>
+							<div class="icon shadow"	id="shadow1"></div>
+							<div class="icon light"		id="light1"></div>
+						</div>
+						<div class="icon rupees" id="rupees1">0</div>
+						<div class="icon deaths" id="deaths1">0</div>
+						<div class="icon skulltulas" id="skulltulas1">0</div>
 					</div>
-					<div class="slot" id="slot2">
-						<div class="file file2"><div class="name" id="name2"></div></div>
-						<div class="info" id="info1">
-							<div class="heartcontainer">
-								<div class="hearts" id="hearts2top" style="width: 96;"></div>
-								<div class="hearts" id="hearts2bot" style="width: 0;"></div>
-							</div>
-							<div class="medallioncontainer">
-								<div class="icon kokiri"	id="kokiri2"></div>
-								<div class="icon goron"		id="goron2"></div>
-								<div class="icon zora"		id="zora2"></div>
-								<div class="icon forest"	id="forest2"></div>
-								<div class="icon fire"		id="fire2"></div>
-								<div class="icon water"		id="water2"></div>
-								<div class="icon spirit"	id="spirit2"></div>
-								<div class="icon shadow"	id="shadow2"></div>
-								<div class="icon light"		id="light2"></div>
-							</div>
-							<div class="icon rupees" id="rupees2">0</div>
-							<div class="icon deaths" id="deaths2">0</div>
-							<div class="icon skulltulas" id="skulltulas2">0</div>
+				</div>
+				<div class="slot" id="slot2">
+					<div class="file file2"><div class="name" id="name2"></div></div>
+					<div class="info" id="info1">
+						<div class="heartcontainer">
+							<div class="hearts" id="hearts2top" style="width: 96;"></div>
+							<div class="hearts" id="hearts2bot" style="width: 0;"></div>
 						</div>
+						<div class="medallioncontainer">
+							<div class="icon kokiri"	id="kokiri2"></div>
+							<div class="icon goron"		id="goron2"></div>
+							<div class="icon zora"		id="zora2"></div>
+							<div class="icon forest"	id="forest2"></div>
+							<div class="icon fire"		id="fire2"></div>
+							<div class="icon water"		id="water2"></div>
+							<div class="icon spirit"	id="spirit2"></div>
+							<div class="icon shadow"	id="shadow2"></div>
+							<div class="icon light"		id="light2"></div>
+						</div>
+						<div class="icon rupees" id="rupees2">0</div>
+						<div class="icon deaths" id="deaths2">0</div>
+						<div class="icon skulltulas" id="skulltulas2">0</div>
 					</div>
-					<div class="slot" id="slot3">
-						<div class="file file3"><div class="name" id="name3"></div></div>
-						<div class="info" id="info1">
-							<div class="heartcontainer">
-								<div class="hearts" id="hearts3top" style="width: 96;"></div>
-								<div class="hearts" id="hearts3bot" style="width: 0;"></div>
-							</div>
-							<div class="medallioncontainer">
-								<div class="icon kokiri"	id="kokiri3"></div>
-								<div class="icon goron"		id="goron3"></div>
-								<div class="icon zora"		id="zora3"></div>
-								<div class="icon forest"	id="forest3"></div>
-								<div class="icon fire"		id="fire3"></div>
-								<div class="icon water"		id="water3"></div>
-								<div class="icon spirit"	id="spirit3"></div>
-								<div class="icon shadow"	id="shadow3"></div>
-								<div class="icon light"		id="light3"></div>
-							</div>
-							<div class="icon rupees" id="rupees3">0</div>
-							<div class="icon deaths" id="deaths3">0</div>
-							<div class="icon skulltulas" id="skulltulas3">0</div>
+				</div>
+				<div class="slot" id="slot3">
+					<div class="file file3"><div class="name" id="name3"></div></div>
+					<div class="info" id="info1">
+						<div class="heartcontainer">
+							<div class="hearts" id="hearts3top" style="width: 96;"></div>
+							<div class="hearts" id="hearts3bot" style="width: 0;"></div>
 						</div>
+						<div class="medallioncontainer">
+							<div class="icon kokiri"	id="kokiri3"></div>
+							<div class="icon goron"		id="goron3"></div>
+							<div class="icon zora"		id="zora3"></div>
+							<div class="icon forest"	id="forest3"></div>
+							<div class="icon fire"		id="fire3"></div>
+							<div class="icon water"		id="water3"></div>
+							<div class="icon spirit"	id="spirit3"></div>
+							<div class="icon shadow"	id="shadow3"></div>
+							<div class="icon light"		id="light3"></div>
+						</div>
+						<div class="icon rupees" id="rupees3">0</div>
+						<div class="icon deaths" id="deaths3">0</div>
+						<div class="icon skulltulas" id="skulltulas3">0</div>
 					</div>
 				</div>
 			</div>
