@@ -230,6 +230,7 @@ oot.updateSlotsFromSave = function(save) {
 		var deaths = oot.getSaveShort(save, i, 0x0022);
 		var containers = oot.getSaveShort(save, i, 0x002E) / 0x10;
 		var hearts = oot.getSaveShort(save, i, 0x0030);
+		var goldskulltula = oot.getSaveShort(save, i, 0x00D0);
 
 		if (containers < 3)
 			containers = 3;
@@ -256,6 +257,7 @@ oot.updateSlotsFromSave = function(save) {
 		document.getElementById('name'+i).innerHTML = name;
 		document.getElementById('rupees'+i).innerHTML = rupees;
 		document.getElementById('deaths'+i).innerHTML = deaths;
+		document.getElementById('skulltulas'+i).innerHTML = goldskulltula;
 
 		var completion = {
 			kokiri: oot.getSaveBit(save, i, 0x0ED5, 7),
@@ -273,7 +275,6 @@ oot.updateSlotsFromSave = function(save) {
 		for (var key in completion) {
 			var value = completion[key];
 			var icon = document.getElementById(key+i);
-			console.log(key+i, value ? 'visible' : 'hidden');
 			icon.style.visibility = value ? 'visible' : 'hidden';
 		}
 	}
@@ -375,6 +376,7 @@ oot.expandFile = function() {
 	this.style.height = this.open ? 171 : 49;
 	this.children[1].style.opacity = this.open ? 1 : 0;
 	this.children[1].style.height = this.open ? 98 : 0;
+	this.children[1].style.padding = this.open ? 12 : 0;
 	this.children[1].style.visibility = this.open ? 'visible' : 'hidden';
 
 	var slots = document.getElementsByClassName('slot');
@@ -386,6 +388,7 @@ oot.expandFile = function() {
 		slot.style.height = 49;
 		slot.children[1].style.opacity = 0;
 		slot.children[1].style.height = 0;
+		slot.children[1].style.padding = 0;
 		slot.children[1].style.visibility = 'hidden';
 	}
 }
