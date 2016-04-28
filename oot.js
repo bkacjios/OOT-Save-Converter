@@ -10,14 +10,14 @@ Array.prototype.save = function(name) {
 
 	document.body.appendChild(a);
 
-    var blob = new Blob(this, {type: "octet/stream"});
-    var url = window.URL.createObjectURL(blob);
+	var blob = new Blob(this, {type: "octet/stream"});
+	var url = window.URL.createObjectURL(blob);
 
-    a.href = url;
-    a.download = name;
-    a.click();
+	a.href = url;
+	a.download = name;
+	a.click();
 
-    window.URL.revokeObjectURL(url);
+	window.URL.revokeObjectURL(url);
 	document.body.removeChild(a);
 }
 
@@ -318,36 +318,36 @@ oot.updateSaveSettings = function(save) {
 }
 
 oot.handleSRASelect = function(evt) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-    	var data = new Uint8Array(e.target.result);
-    	oot.SAVE_DATA = oot.importSaveFromSRA(data);
-    	oot.updateSlotsFromSave(oot.SAVE_DATA);
-    	oot.updateSaveSettings(oot.SAVE_DATA)
-    };
-    reader.onerror = function (e) {
-        console.error(e);
-    };
-    reader.readAsArrayBuffer(evt.target.files[0]);
+	var reader = new FileReader();
+	reader.onload = function (e) {
+		var data = new Uint8Array(e.target.result);
+		oot.SAVE_DATA = oot.importSaveFromSRA(data);
+		oot.updateSlotsFromSave(oot.SAVE_DATA);
+		oot.updateSaveSettings(oot.SAVE_DATA)
+	};
+	reader.onerror = function (e) {
+		console.error(e);
+	};
+	reader.readAsArrayBuffer(evt.target.files[0]);
 
 	evt.target.form.reset();
 }
 
 oot.handleRAMSelect = function(evt) {
-    var reader = new FileReader();
+	var reader = new FileReader();
 
-    var version = document.getElementById("version").selectedIndex;
-    var file = document.getElementById("file").selectedIndex;
+	var version = document.getElementById("version").selectedIndex;
+	var file = document.getElementById("file").selectedIndex;
 
-    reader.onload = function (e) {
-    	var data = new Uint8Array(e.target.result);
-    	oot.importSaveFromRAM(data, version, oot.SAVE_DATA, file);
-    	oot.updateSlotsFromSave(oot.SAVE_DATA);
-    };
-    reader.onerror = function (e) {
-        console.error(e);
-    };
-    reader.readAsArrayBuffer(evt.target.files[0]);
+	reader.onload = function (e) {
+		var data = new Uint8Array(e.target.result);
+		oot.importSaveFromRAM(data, version, oot.SAVE_DATA, file);
+		oot.updateSlotsFromSave(oot.SAVE_DATA);
+	};
+	reader.onerror = function (e) {
+		console.error(e);
+	};
+	reader.readAsArrayBuffer(evt.target.files[0]);
 
 	evt.target.form.reset();
 }
