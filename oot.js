@@ -185,9 +185,15 @@ oot.importSaveFromRAM = function(data, version, save, slot) {
 	// Update file index
 	raw[0x1354] = slot;
 
+	// Update save data for file
 	save[slot+1] = raw;
+	// Update save data for backup
 	save[slot+1+3] = raw;
 
+	// Expand the file slot
+	oot.expandFile(document.getElementById('slot'+(slot+1)));
+
+	// Verify save data and display any problems
 	oot.verifySave(raw);
 }
 
@@ -371,19 +377,19 @@ for(var i in ztargetOptions) {
 	ztargetOptions[i].onclick = oot.updateZTargetSettings
 }
 
-oot.expandFile = function() {
-	this.open = this.open ? false : true;
-	this.style.height = this.open ? 171 : 49;
-	this.children[1].style.opacity = this.open ? 1 : 0;
-	this.children[1].style.height = this.open ? 98 : 0;
-	this.children[1].style.padding = this.open ? 12 : 0;
-	this.children[1].style.visibility = this.open ? 'visible' : 'hidden';
+oot.expandFile = function(div) {
+	div.open = div.open ? false : true;
+	div.style.height = div.open ? 171 : 49;
+	div.children[1].style.opacity = div.open ? 1 : 0;
+	div.children[1].style.height = div.open ? 98 : 0;
+	div.children[1].style.padding = div.open ? 12 : 0;
+	div.children[1].style.visibility = div.open ? 'visible' : 'hidden';
 
 	var slots = document.getElementsByClassName('slot');
 
 	for (var i=0; i<slots.length; i++) {
 		var slot = slots[i];
-		if (slot == this) continue;
+		if (slot == div) continue;
 		slot.open = false;
 		slot.style.height = 49;
 		slot.children[1].style.opacity = 0;
@@ -393,6 +399,10 @@ oot.expandFile = function() {
 	}
 }
 
-document.getElementById('slot1').addEventListener('click', oot.expandFile);
-document.getElementById('slot2').addEventListener('click', oot.expandFile);
-document.getElementById('slot3').addEventListener('click', oot.expandFile);
+oot.clickFile = function() {
+	oot.expandFile(this);
+}
+
+document.getElementById('slot1').addEventListener('click', oot.clickFile);
+document.getElementById('slot2').addEventListener('click', oot.clickFile);
+document.getElementById('slot3').addEventListener('click', oot.clickFile);
