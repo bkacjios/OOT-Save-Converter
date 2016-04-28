@@ -51,10 +51,6 @@ var oot = {
 		0x600	// Junk
 	],
 
-	ushort: function(low, high) {
-		return (low << 8) + high;
-	},
-
 	// Flip the byte order of raw binary data
 	swap: function(data) {
 		// Create a buffer
@@ -125,7 +121,7 @@ oot.getSaveSlotValueShort = function(save, slot, pos) {
 	var low = slot[pos];
 	var high = slot[pos+1];
 
-	return oot.ushort(low, high);
+	return (low << 8) + high;
 }
 
 oot.createBlankSave = function() {
@@ -159,9 +155,7 @@ oot.verifySave = function(data) {
 	var high = data[0x1353];
 
 	// Combine the low and high end bytes into an actual hash
-	var hash = oot.ushort(low, high);
-
-	console.log(checksum, hash);
+	var hash = (low << 8) + high;
 
 	// Check for CRC integrity
 	if (checksum != hash)
@@ -225,13 +219,14 @@ oot.importSaveFromRAM = function(data, version, save, slot) {
 oot.updateSlotsFromSave = function(save) {
 	for (var i=1; i<=3; i++) {
 		var name = oot.getSaveSlotName(save, i);
-		var rupees = oot.getSaveSlotValueShort(save, i, 0x0036);
+		var rupees = oot.getSaveSlotValueShort(save, i, 0x0034);
 		var deaths = oot.getSaveSlotValueShort(save, i, 0x0022);
 		var containers = oot.getSaveSlotValueShort(save, i, 0x002E);
 		var hearts = oot.getSaveSlotValueShort(save, i, 0x0030);
 
 		console.log(name, rupees, deaths, containers / 0x10, hearts / 0x10);
 		document.getElementById('name'+i).innerHTML = name;
+		document.getElementById('rupees'+i).innerHTML = rupees;
 	}
 }
 
@@ -315,11 +310,35 @@ document.getElementById('fileuploadSRA').addEventListener('change', oot.handleSR
 document.getElementById('fileuploadRAM').addEventListener('change', oot.handleRAMSelect, false);
 
 var soundOptions = document.getElementsByName('sound');
-for(var radio in soundOptions) {
-	soundOptions[radio].onclick = oot.updateSaveSoundSettings
+for(var i in soundOptions) {
+	soundOptions[i].onclick = oot.updateSaveSoundSettings
 }
 
 var ztargetOptions = document.getElementsByName('ztarget');
-for(var radio in ztargetOptions) {
-	ztargetOptions[radio].onclick = oot.updateZTargetSettings
+for(var i in ztargetOptions) {
+	ztargetOptions[i].onclick = oot.updateZTargetSettings
 }
+
+oot.expandFile = function() {
+	this.open = this.open ? false : true;
+	this.style.height = this.open ? 171 : 49;
+	this.children[1].style.opacity = this.open ? 1 : 0;
+	this.children[1].style.height = this.open ? 110 : 0;
+	this.children[1].style.visibility = this.open ? 'visible' : 'hidden';
+
+	var slots = document.getElementsByClassName('slot');
+
+	for (var i=0; i<slots.length; i++) {
+		var slot = slots[i];
+		if (slot == this) continue;
+		slot.open = false;
+		slot.style.height = 49;
+		slot.children[1].style.opacity = 0;
+		slot.children[1].style.height = 0;
+		slot.children[1].style.visibility = 'hidden';
+	}
+}
+
+document.getElementById('slot1').addEventListener('click', oot.expandFile);
+document.getElementById('slot2').addEventListener('click', oot.expandFile);
+document.getElementById('slot3').addEventListener('click', oot.expandFile);

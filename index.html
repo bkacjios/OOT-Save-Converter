@@ -13,10 +13,17 @@
 				padding: 0px;
 				image-rendering: pixelated;
 				font-family: "Chairo";
+				color: white;
 			}
 
 			form {
 				margin-bottom: 0px;
+			}
+
+			select {
+				float: right;
+				margin-top: 12px;
+				margin-left: 4px;
 			}
 
 			h1 {
@@ -36,19 +43,18 @@
 				height: 269px;
 			}
 
-			.info {
+			.bubble {
 				background: rgba(0, 0, 0, 0.5);
 				border-radius: 16px;
 				font-family: "Chairo";
 				font-size: 16px;
 				line-height: 18px;
-				color: white;
 				width: 480px;
 				padding: 16px;
 				margin-bottom: 8px;
 			}
 
-			.info .uploadexample {
+			.bubble .uploadexample {
 				display: inline-block;
 				background-image: url("./images/menu_enter.png");
 				background-size: 100% 100%;
@@ -61,34 +67,37 @@
 				width: 512px;
 			}
 
-			.files .slot {
-				display: flex;
-			}
-
 			.files .file {
+				cursor: pointer;
 				width: 512;
 				height: 49;
+				background-size: 512px 49px;
+			}
 
+			/*.files .slot:hover .file {
+				height: 171px;
+			}*/
+
+			.slot {
+				height: 49;
 				transition-property: height;
-				transition-duration: 0.5s;
+				transition-duration: 0.25s;
 				transition-timing-function: ease;
 			}
 
-			.files .slot:hover .file {
-				background-size: 512px 171px;
-				height: 171px;
+			.slot .file1 {
+				background-image: url("./images/file1.png");
+				background-repeat: no-repeat;
 			}
 
-			.files .slot:hover .file1 {
-				background-image: url("./images/file1_details.png");
+			.slot .file2 {
+				background-image: url("./images/file2.png");
+				background-repeat: no-repeat;
 			}
 
-			.files .slot:hover .file2 {
-				background-image: url("./images/file2_details.png");
-			}
-
-			.files .slot:hover .file3 {
-				background-image: url("./images/file3_details.png");
+			.slot .file3 {
+				background-image: url("./images/file3.png");
+				background-repeat: no-repeat;
 			}
 
 			.files .header {
@@ -97,11 +106,10 @@
 				margin-top: 8px;
 				margin-bottom: 8px;
 				padding-left: 24px;
-				color: white;
 			}
 
 			.upload {
-				background-image: url("./images/menu_enter.png");
+				background: url("./images/menu_enter.png");
 				background-size: 100% 100%;
 				width: 42px;
 				height: 24px;
@@ -110,14 +118,13 @@
 				cursor: pointer;
 			}
 
-			select {
-				float: right;
-				margin-top: 12px;
-				margin-left: 4px;
-			}
-
-			.file .name {
-				width: 210px;
+			.slot .name {
+				user-select: none;
+				-moz-user-select: none;
+				-khtml-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				width: 274px;
 				height: 49px;
 				float: left;
 				margin-left: 238px;
@@ -125,22 +132,31 @@
 				font-size: 24px;
 			}
 
-			.slot .file1 {
-				background-image: url("./images/file1.png");
-				background-repeat: no-repeat;
-				background-size: 512px 49px;
+			.slot .info {
+				visibility: hidden;
+				opacity: 0;
+
+				display: inline-block;
+				background: url("./images/file_details.png");
+				background-size: 512px 122px;
+
+				width: 500px;
+				height: 0px;
+				padding-left: 12px;
+				padding-top: 12px;
+
+				transition-property: height, opacity, visibility;
+				transition-duration: 0.25s;
+				transition-timing-function: ease;
 			}
 
-			.slot .file2 {
-				background-image: url("./images/file2.png");
+			.info .rupees {
+				background: url("./images/rupee.png");
 				background-repeat: no-repeat;
-				background-size: 512px 49px;
-			}
-
-			.slot .file3 {
-				background-image: url("./images/file3.png");
-				background-repeat: no-repeat;
-				background-size: 512px 49px;
+				background-size: 32px 32px;
+				width: 32px;
+				height: 32px;
+				padding-left: 32px;
 			}
 		</style>
 	</head>
@@ -151,7 +167,7 @@
 		</form>
 
 		<div class="container">
-			<div class="info">
+			<div class="bubble">
 				Welcome to the Ocarina of Time save importer!</br></br>You can use this page to upload raw RAM dumps, from your copy of Ocarina of Time, and convert it for use with your favorite emulator. If you already have an emulator save you wish to use as a base, import it first using the <div class="uploadexample"></div> button.
 			</div>
 			<div class="files">
@@ -174,23 +190,6 @@
 					</select>
 				</div>
 				<div class="header"><h1>3. Download save file</h1><div class="upload" onclick="oot.download();"></div></div>
-				<div class="slotcontainer">
-					<div class="slot" id="slot1">
-						<div class="file file1">
-							<div class="name" id="name1"></div>
-						</div>
-					</div>
-					<div class="slot" id="slot2">
-						<div class="file file2">
-							<div class="name" id="name2"></div>
-						</div>
-					</div>
-					<div class="slot" id="slot3">
-						<div class="file file3">
-							<div class="name" id="name3"></div>
-						</div>
-					</div>
-				</div>
 				<div class="settings header">Settings
 					<form>
 						<input type="radio" name="sound" value=0 checked=true>Stereo
@@ -202,6 +201,26 @@
 						<input type="radio" name="ztarget" value=0 checked=true>Switch
 						<input type="radio" name="ztarget" value=1>Hold
 					</form>
+				</div>
+				<div class="slotcontainer">
+					<div class="slot" id="slot1">
+						<div class="file file1"><div class="name" id="name1"></div></div>
+						<div class="info" id="info1">
+							<div class="rupees" id="rupees1">0</div>
+						</div>
+					</div>
+					<div class="slot" id="slot2">
+						<div class="file file2"><div class="name" id="name2"></div></div>
+						<div class="info" id="info1">
+							<div class="rupees" id="rupees2">0</div>
+						</div>
+					</div>
+					<div class="slot" id="slot3">
+						<div class="file file3"><div class="name" id="name3"></div></div>
+						<div class="info" id="info1">
+							<div class="rupees" id="rupees3">0</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
